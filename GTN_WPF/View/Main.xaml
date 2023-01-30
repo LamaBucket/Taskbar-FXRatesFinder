@@ -1,0 +1,148 @@
+﻿<Window x:Class="GTN_WPF.View.Main"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GTN_WPF.View"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:vm="clr-namespace:GTN_WPF.ViewModel" d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Currency Displayer"
+        Height="450" Width="800"
+        Visibility="{Binding AppVisibility, Mode=TwoWay}"
+        Background="{DynamicResource MaterialDesignLightBackground}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="1"
+                    Command="{Binding ReloadAppCommand}"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                <md:PackIcon Kind="Refresh" />
+            </Button>
+
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox Name="tctrlTabs"
+                    Style="{DynamicResource MaterialDesignNavigationListBox}"
+                    Grid.Column="0"
+                    SelectedItem="{Binding SelectedItem, Mode=OneWayToSource}">
+
+                <ListBoxItem Name="List">
+                    <StackPanel Orientation="Horizontal">
+                        <md:PackIcon Kind="FormatListBulletedSquare"
+                                        VerticalAlignment="Center"
+                                        Margin="5"/>
+
+                        <TextBlock Text="List"
+                                    VerticalAlignment="Center"/>
+                    </StackPanel>
+                </ListBoxItem>
+
+                <ListBoxItem Name="Settings">
+                    <StackPanel Orientation="Horizontal">
+
+                        <md:PackIcon Kind="CogOutline"
+                                        VerticalAlignment="Center"
+                                        Margin="5"/>
+
+                        <TextBlock Text="Settings"
+                                    VerticalAlignment="Center"/>
+                    </StackPanel>
+                </ListBoxItem>
+
+            </ListBox>
+
+
+            <Frame Grid.Column="1"
+                   NavigationUIVisibility="Hidden"
+                   Source="{Binding SelectedPageName, Mode=OneWay}"
+                   Margin="2.5"
+                   BorderBrush="{DynamicResource AttentionToActionBrush}"
+                   BorderThickness="1"/>
+        </Grid>
+       
+        
+        <TextBlock  Grid.Row="2"
+                    Grid.Column="0"
+                    HorizontalAlignment="Right"
+                    Margin="5,5"
+                    Style="{DynamicResource MaterialDesignBody1TextBlock}"
+                    Text="Designed By Gleb Bannyy"/>
+
+        <tb:TaskbarIcon PopupActivation="LeftClick"
+                        x:Name="TaskbarControl">
+
+            <tb:TaskbarIcon.TrayToolTip>
+                <Grid Background="WhiteSmoke">
+
+                    <TextBlock Foreground="Black"
+                               Margin="5,5">
+                    
+                        Currency Displayer
+
+                    </TextBlock>
+
+                </Grid>
+            </tb:TaskbarIcon.TrayToolTip>
+
+            <tb:TaskbarIcon.TrayPopup>
+                <Grid Background="WhiteSmoke">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" 
+                               Grid.Column="0" 
+                               Text="Items"
+                               Style="{DynamicResource MaterialDesignTextBlock}"
+                               HorizontalAlignment="Center"/>
+
+                    <DataGrid Grid.Row="1"
+                              ItemsSource="{Binding PopupData, Mode=OneWay}"
+                              IsReadOnly="True"/>
+                </Grid>
+            </tb:TaskbarIcon.TrayPopup>
+
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+
+                    <MenuItem Header="Show Base Application"
+                              Command="{Binding ShowBaseApplicationCommand, Mode=OneWay}"></MenuItem>
+                    <MenuItem Header="Hide Base Application"
+                              Command="{Binding HideBaseApplicationCommand, Mode=OneWay}"></MenuItem>
+
+                    <Separator/>
+
+                    <MenuItem Header="Quit"
+                              Command="{Binding CloseApplication, Mode=OneWay}"/>
+
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+
+        </tb:TaskbarIcon>
+        
+    </Grid>
+</Window>
