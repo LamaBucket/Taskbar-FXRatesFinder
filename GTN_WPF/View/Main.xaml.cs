@@ -25,8 +25,12 @@ namespace GTN_WPF.View
 
             AppConfig? config = manager.GetConfig();
 
-            if (config is null || config.ApiKey == String.Empty)
-                throw new Exception("Set Api Key In GTNAppConfig.json");
+            if (config is null || String.IsNullOrEmpty(config.ApiKey))
+            {
+                MessageBox.Show("Set ApiKey in GTNAppConfig.json first!");
+
+                Application.Current.Shutdown();
+            }
 
             MainViewModel vm = new MainViewModel(manager, new DataProviderWeb(config.ApiKey));
 
